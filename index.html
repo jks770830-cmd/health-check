@@ -527,13 +527,63 @@
 </head>
 <body>
     <div id="app">
+        <!-- Intro View (시작 화면) -->
+        <div id="introView" style="max-width:400px; margin:0 auto; padding:60px 24px; text-align:center;">
+            <div style="background:white; border-radius:24px; padding:40px 28px; box-shadow:0 8px 32px rgba(0,0,0,0.08);">
+
+                <div style="font-size:48px; margin-bottom:24px;">🩺</div>
+
+                <h1 style="font-size:24px; font-weight:800; color:#1a2332; line-height:1.5; margin-bottom:28px;">
+                    혹시, 요즘<br>이런 적 있으세요?
+                </h1>
+
+                <div style="text-align:left; margin-bottom:28px;">
+                    <div style="display:flex; align-items:center; gap:10px; padding:12px 0; border-bottom:1px solid #f0f0f5;">
+                        <span style="color:#ff6b4a; font-size:18px;">☑</span>
+                        <span style="font-size:15px; color:#333;">갑자기 일어날 때 핑 돈 적</span>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:10px; padding:12px 0; border-bottom:1px solid #f0f0f5;">
+                        <span style="color:#ff6b4a; font-size:18px;">☑</span>
+                        <span style="font-size:15px; color:#333;">예전엔 쉬웠던 게 요즘 힘들어진 것</span>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:10px; padding:12px 0; border-bottom:1px solid #f0f0f5;">
+                        <span style="color:#ff6b4a; font-size:18px;">☑</span>
+                        <span style="font-size:15px; color:#333;">거울 볼 때 "나 왜 이렇지?" 싶은 순간</span>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:10px; padding:12px 0;">
+                        <span style="color:#ff6b4a; font-size:18px;">☑</span>
+                        <span style="font-size:15px; color:#333;">사진 찍을 때 옛날이랑 비교되는 순간</span>
+                    </div>
+                </div>
+
+                <p style="font-size:15px; color:#555; line-height:1.9; margin-bottom:32px;">
+                    하나라도 해당되셨다면,<br>
+                    당신 혼자만의 이야기가 아니에요.<br><br>
+                    <strong>딱 2분, 내 몸이 보내는 신호</strong><br>
+                    AI가 무료로 읽어드릴게요.
+                </p>
+
+                <button onclick="startCheck()" style="
+                    width:100%; padding:18px; font-size:17px; font-weight:800;
+                    background:linear-gradient(135deg, #ff6b4a 0%, #ff8c42 100%);
+                    color:white; border:none; border-radius:16px; cursor:pointer;
+                    box-shadow:0 8px 20px rgba(255,107,74,0.3);">
+                    내 신호 확인하기 →
+                </button>
+
+                <p style="font-size:12px; color:#aaa; margin-top:16px;">
+                    비회원 · 2분 소요 · 100% 무료
+                </p>
+            </div>
+        </div>
+
         <!-- Progress Bar -->
-        <div class="progress-bar">
+        <div class="progress-bar hidden" id="progressBar">
             <div class="progress-fill" id="progressFill"></div>
         </div>
 
         <!-- Header -->
-        <div class="header" id="mainHeader">
+        <div class="header hidden" id="mainHeader">
             <div class="header-content">
                 <p class="header-label">건강 자가 점검</p>
                 <p class="header-step" id="stepText">1 / 15</p>
@@ -541,7 +591,7 @@
         </div>
 
         <!-- Question View -->
-        <div id="questionView" class="container">
+        <div id="questionView" class="container hidden">
             <div class="question-card">
                 <div class="category-badge">
                     <span class="category-text" id="categoryText">뇌신경계</span>
@@ -803,6 +853,14 @@
         const urlParams = new URLSearchParams(window.location.search);
         source = urlParams.get('source') || 'direct';
         agentCode = urlParams.get('agent') || '테스트';
+
+        function startCheck() {
+            document.getElementById('introView').classList.add('hidden');
+            document.getElementById('progressBar').classList.remove('hidden');
+            document.getElementById('mainHeader').classList.remove('hidden');
+            document.getElementById('questionView').classList.remove('hidden');
+            updateUI();
+        }
 
         function updateUI() {
             const question = questions[currentStep];
