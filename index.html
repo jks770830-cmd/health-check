@@ -660,43 +660,59 @@
                         </p>
                     </div>
 
-                    <!-- 혜택 안내 -->
-                    <div class="benefit-box">
-                        <div class="benefit-title">
-                            <div class="benefit-icon">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                                </svg>
-                            </div>
-                            무료 제공 안내
+                    <!-- ═══ STEP 1: 혜택 제시 (갈망 단계) ═══ -->
+                    <div id="benefitStep" class="benefit-box" style="background: linear-gradient(135deg, #fffbeb 0%, #fff7ed 100%); border: 2px solid #fbbf24;">
+                        <div style="text-align:center; margin-bottom:16px;">
+                            <span style="font-size:32px;">🎁</span>
                         </div>
-                        <ul class="benefit-list">
-                            <li>내 지역 협약 검진기관 정보</li>
-                            <li>병원별 검진 프로그램 비교</li>
-                            <li>건강보장 GAP 분석 및 전문 컨설팅 리포트</li>
-                        </ul>
+                        <h3 style="font-size:18px; font-weight:800; color:#92400E; text-align:center; margin-bottom:16px;">
+                            점검 신청자에게만 드리는 혜택
+                        </h3>
+                        <div style="margin-bottom:20px;">
+                            <div style="display:flex; align-items:center; gap:10px; padding:14px; background:white; border-radius:12px; margin-bottom:8px; box-shadow:0 1px 4px rgba(0,0,0,0.05);">
+                                <span style="font-size:20px;">📋</span>
+                                <div>
+                                    <strong style="font-size:15px; color:#1a2332;">4050 전용 예방·관리 실천 가이드</strong>
+                                    <p style="font-size:12px; color:#888; margin:2px 0 0;">뇌졸중·심혈관 골든타임 사수 핸드북</p>
+                                </div>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:10px; padding:14px; background:white; border-radius:12px; margin-bottom:8px; box-shadow:0 1px 4px rgba(0,0,0,0.05);">
+                                <span style="font-size:20px;">🥗</span>
+                                <div>
+                                    <strong style="font-size:15px; color:#1a2332;">혈관 살리는 실전 식단표</strong>
+                                    <p style="font-size:12px; color:#888; margin:2px 0 0;">오늘 저녁부터 바꿀 수 있는 주간 식단</p>
+                                </div>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:10px; padding:14px; background:white; border-radius:12px; box-shadow:0 1px 4px rgba(0,0,0,0.05);">
+                                <span style="font-size:20px;">🏥</span>
+                                <div>
+                                    <strong style="font-size:15px; color:#1a2332;">내 지역 종합검진 우대 병원 리스트</strong>
+                                    <p style="font-size:12px; color:#888; margin:2px 0 0;">가까운 협약 검진기관 안내</p>
+                                </div>
+                            </div>
+                        </div>
+                        <button onclick="showContactForm()" style="
+                            width:100%; padding:16px; font-size:16px; font-weight:800;
+                            background:linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+                            color:white; border:none; border-radius:14px; cursor:pointer;
+                            box-shadow:0 4px 16px rgba(245,158,11,0.3);">
+                            혜택 받기
+                        </button>
+                        <p style="font-size:11px; color:#b45309; text-align:center; margin-top:10px;">
+                            본 자료는 점검 신청자에게만 제공됩니다.
+                        </p>
                     </div>
 
-                    <!-- 연락처 입력 폼 -->
-                    <div class="contact-form">
-                        <p class="contact-form-title">지역 병원 안내를 받고 싶으시면<br>아래에 입력해주세요</p>
-                        
-                        <input type="text" 
-                               class="contact-input" 
-                               id="userName" 
-                               placeholder="이름"
-                               required>
-                        
-                        <input type="tel" 
-                               class="contact-input" 
-                               id="userPhone" 
-                               placeholder="010-0000-0000"
-                               required>
-                        
-                        <select class="contact-input" 
-                                id="userRegion" 
-                                required>
+                    <!-- ═══ STEP 2: 개인정보 입력 (숨김 → 혜택 받기 클릭 시 표시) ═══ -->
+                    <div class="contact-form hidden" id="contactFormStep">
+                        <p class="contact-form-title" style="font-size:16px; color:#1a2332;">
+                            자료 발송을 위해<br>아래 정보를 확인해주세요
+                        </p>
+
+                        <input type="text" class="contact-input" id="userName" placeholder="이름" required>
+                        <input type="tel" class="contact-input" id="userPhone" placeholder="010-0000-0000" required>
+
+                        <select class="contact-input" id="userRegion" required>
                             <option value="">거주 지역 선택</option>
                             <option value="서울">서울특별시</option>
                             <option value="부산">부산광역시</option>
@@ -716,64 +732,48 @@
                             <option value="경남">경상남도</option>
                             <option value="제주">제주특별자치도</option>
                         </select>
-                        
-                        <!-- 동의 섹션 -->
+
                         <div class="consent-section">
                             <div class="consent-all" onclick="toggleAllConsent()">
                                 <input type="checkbox" id="consentAll">
                                 <label for="consentAll">이용약관 및 서비스 안내 전체동의</label>
                             </div>
-                            
                             <div class="consent-detail">
                                 <div class="consent-item">
                                     <input type="checkbox" id="consent1" class="consent-checkbox" required>
-                                    <label for="consent1">
-                                        개인정보 수집 및 이용 동의
-                                        <span class="consent-badge">(필수)</span>
-                                    </label>
+                                    <label for="consent1">개인정보 수집 및 이용 동의 <span class="consent-badge">(필수)</span></label>
                                 </div>
-                                
                                 <div class="consent-item">
                                     <input type="checkbox" id="consent2" class="consent-checkbox" required>
-                                    <label for="consent2">
-                                        민감정보(건강응답) 처리 동의
-                                        <span class="consent-badge">(필수)</span>
-                                    </label>
+                                    <label for="consent2">민감정보(건강응답) 처리 동의 <span class="consent-badge">(필수)</span></label>
                                 </div>
-                                
                                 <div class="consent-item">
                                     <input type="checkbox" id="consent3" class="consent-checkbox">
-                                    <label for="consent3">
-                                        건강보장 GAP 분석 및 전문 컨설팅 리포트 수신
-                                        <span class="consent-badge">(선택)</span>
-                                    </label>
+                                    <label for="consent3">건강관리 상담 안내 수신 동의 <span class="consent-badge">(선택)</span></label>
                                 </div>
                             </div>
-                            
-                            <div style="text-align: center; margin-top: 12px;">
-                                <a href="#" onclick="showDetailNotice(); return false;" class="consent-link" style="font-size: 11px;">
-                                    자세히 보기
-                                </a>
+                            <div style="text-align:center; margin-top:12px;">
+                                <a href="#" onclick="showDetailNotice(); return false;" class="consent-link" style="font-size:11px;">자세히 보기</a>
                             </div>
                         </div>
-                        
+
                         <button class="submit-button" id="submitBtn" onclick="submitContact()">
-                            지역 병원 안내 받기
+                            신청 완료
                         </button>
-                        
-                        <p class="contact-form-notice" style="margin-top: 16px;">
+
+                        <p class="contact-form-notice" style="margin-top:12px; font-size:12px; color:#94a3b8; text-align:center;">
                             본 서비스는 시니어헬스 컨설팅 파트너에서 운영하며,<br>
-                            신청 시 건강관리 및 보장 점검 상담 안내가 진행됩니다.
+                            건강관리 및 보장 점검 상담 안내가 포함될 수 있습니다.
                         </p>
                     </div>
 
-                    <!-- 소개 -->
+                    <!-- 가족 공유 -->
                     <div class="referral-section">
                         <p class="referral-title">
                             💡 건강이 걱정되는 가족·지인분께 공유하세요
                         </p>
                         <button class="referral-btn" onclick="shareLink()">
-                            채널 공유하기
+                            공유하기
                         </button>
                     </div>
                 </div>
@@ -795,12 +795,24 @@
                 </div>
 
                 <div class="result-card">
-                    <h1 class="result-title" style="color: #059669;">신청 완료!</h1>
-                    <p class="result-subtitle" style="font-size: 16px; color: #1a2332; line-height: 1.8;">
-                        감사합니다.<br><br>
-                        <strong style="color: #ff6b4a;">1~2일 안에</strong> 지역 병원 정보를<br>
-                        문자로 안내드리겠습니다.
+                    <h1 class="result-title" style="color: #059669;">신청이 완료되었습니다!</h1>
+                    <p class="result-subtitle" style="font-size: 16px; color: #1a2332; line-height: 2;">
+                        고객님의 <strong style="color: #ff6b4a;">전담 상담사</strong>가<br>
+                        문자로 혜택 자료 발송 후<br>
+                        전화 안내 예정입니다.<br><br>
+                        <span style="background:#FEF3CD; padding:8px 16px; border-radius:8px; font-size:14px; color:#92400E; font-weight:700;">
+                            꼭 받아주세요!
+                        </span>
                     </p>
+
+                    <div style="background:#f8f9fa; border-radius:12px; padding:16px; margin:20px 0; text-align:left;">
+                        <p style="font-size:13px; color:#555; margin:0; line-height:1.8;">
+                            📋 4050 전용 예방·관리 실천 가이드<br>
+                            🥗 혈관 살리는 실전 식단표<br>
+                            🏥 내 지역 종합검진 우대 병원 리스트<br>
+                            <span style="font-size:12px; color:#999; margin-top:4px; display:block;">상담사 확인 후 순차 발송됩니다</span>
+                        </p>
+                    </div>
 
                     <!-- 소개 -->
                     <div class="referral-section" style="margin-top: 40px;">
@@ -864,6 +876,12 @@
         const urlParams = new URLSearchParams(window.location.search);
         source = urlParams.get('source') || 'direct';
         agentCode = urlParams.get('agent') || '테스트';
+
+        function showContactForm() {
+            document.getElementById('benefitStep').style.display = 'none';
+            document.getElementById('contactFormStep').classList.remove('hidden');
+            document.getElementById('contactFormStep').scrollIntoView({behavior: 'smooth'});
+        }
 
         function startCheck() {
             document.getElementById('introView').classList.add('hidden');
