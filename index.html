@@ -619,18 +619,14 @@
         <!-- Result View -->
         <div id="resultView" class="result-container hidden">
             <div class="result-content">
-                <div class="complete-icon">
-                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <div style="width:48px; height:48px; margin:0 auto 12px; background:linear-gradient(135deg, #ff6b4a 0%, #ff8c42 100%); border-radius:50%; display:flex; align-items:center; justify-content:center;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="20 6 9 17 4 12"></polyline>
                     </svg>
                 </div>
 
                 <div class="result-card">
-                    <h1 class="result-title">점검 완료</h1>
-                    <p class="result-subtitle">
-                        귀하의 건강 자가 점검이 완료되었습니다<br>
-                        <span style="font-size: 12px; color: #94a3b8;">(본 결과는 의학적 진단이 아닙니다)</span>
-                    </p>
+                    <h1 class="result-title" style="font-size:22px; margin-bottom:8px;">점검 완료</h1>
 
                     <!-- 응급 경고 (q4 또는 q5 체크 시) -->
                     <div id="emergencyBox" class="emergency-warning hidden">
@@ -646,17 +642,10 @@
                         </p>
                     </div>
 
-                    <div id="normalBox" class="alert-box hidden" style="background: linear-gradient(135deg, #f0fdf4 0%, #f7fee7 100%); border: 2px solid #d1fae5;">
-                        <div style="text-align: center; margin-bottom: 12px;">
-                            <span style="font-size: 32px;">📋</span>
-                        </div>
-                        <h3 style="font-size: 16px; font-weight: 700; color: #166534; text-align: center; margin-bottom: 8px;">
-                            점검 결과 안내
-                        </h3>
-                        <p style="font-size: 13px; color: #15803d; text-align: center; line-height: 1.7;">
-                            간이 점검상 다수의 위험 징후는 확인되지 않았습니다.<br><br>
-                            다만, 본 결과는 의학적 진단이 아니므로<br>
-                            증상이 있다면 의료기관 상담을 권장합니다.
+                    <div id="normalBox" class="alert-box hidden" style="background: linear-gradient(135deg, #f0fdf4 0%, #f7fee7 100%); border: 2px solid #d1fae5; padding:16px;">
+                        <p style="font-size: 13px; color: #15803d; text-align: center; line-height: 1.6; margin:0;">
+                            ✅ 다수의 위험 징후는 확인되지 않았습니다.<br>
+                            <span style="font-size:11px; color:#94a3b8;">(본 결과는 의학적 진단이 아닙니다)</span>
                         </p>
                     </div>
 
