@@ -561,7 +561,7 @@
                     background:linear-gradient(135deg, #ff6b4a 0%, #ff8c42 100%);
                     color:white; border:none; border-radius:14px; cursor:pointer;
                     box-shadow:0 6px 20px rgba(255,107,74,0.3);">
-                    1분 자가 점검 시작하기 👇
+                    2분 자가 점검 시작하기 👇
                 </button>
 
                 <p style="font-size:11px; color:#aaa; margin-top:10px;">
@@ -753,7 +753,16 @@
         </div>
 
         <!-- Floating Button (결과 화면에서만 표시) -->
-        <!-- 플로팅 버튼 제거됨 -->
+        <!-- 혜택 받기 플로팅 버튼 (결과 화면에서 3초 후 표시) -->
+        <button class="floating-button" id="floatingBenefit" onclick="document.getElementById('benefitStep').scrollIntoView({behavior:'smooth'})" style="
+            position:fixed; bottom:24px; left:50%; transform:translateX(-50%);
+            padding:16px 32px; font-size:17px; font-weight:900;
+            background:linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color:white; border:none; border-radius:50px; cursor:pointer;
+            box-shadow:0 6px 24px rgba(245,158,11,0.4);
+            z-index:999; display:none; animation:pulse 2s infinite;">
+            🎁 혜택 받기
+        </button>
 
         <!-- Thanks View (신청 완료 화면) -->
         <div id="thanksView" class="result-container hidden">
@@ -851,6 +860,8 @@
             document.getElementById('benefitStep').style.display = 'none';
             document.getElementById('contactFormStep').classList.remove('hidden');
             document.getElementById('contactFormStep').scrollIntoView({behavior: 'smooth'});
+            var fb = document.getElementById('floatingBenefit');
+            if (fb) fb.style.display = 'none';
         }
 
         function startCheck() {
@@ -937,10 +948,11 @@
             document.getElementById('mainHeader').classList.add('hidden');
             document.getElementById('resultView').classList.remove('hidden');
             
-            // 떠있는 버튼 표시
+            // 혜택 받기 플로팅 버튼 3초 후 표시
             setTimeout(() => {
-                document.getElementById('floatingBtn').classList.add('show');
-            }, 500);
+                var fb = document.getElementById('floatingBenefit');
+                if (fb) fb.style.display = 'block';
+            }, 3000);
         }
 
         // 전체동의 토글
