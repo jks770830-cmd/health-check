@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>건강 자가 점검 - 시니어헬스</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Apple SD Gothic Neo", sans-serif;
+            background: linear-gradient(135deg, #fef5f1 0%, #fff9f5 100%);
+            min-height: 100vh;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: #e2e8f0;
+            z-index: 100;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b4a 0%, #ff8c42 100%);
+            transition: width 0.3s ease-out;
+        }
+
+        /* Header */
+        .header {
+            padding: 24px 24px 16px;
+            background: white;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .header-content {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .header-label {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-bottom: 4px;
+        }
+
+        .header-step {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a2332;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        .question-card {
+            background: white;
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+            animation: slideIn 0.3s ease-out;
+            min-height: 200px; /* 고정 최소 높이 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        @keyframes slideIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .category-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #fff5f2 0%, #fffaf8 100%);
+            padding: 6px 14px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+        }
+
+        .category-text {
+            font-size: 13px;
+            font-weight: 600;
+            color: #ff6b4a;
+        }
+
+        .question-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a2332;
+            line-height: 1.6;
+            min-height: 60px; /* 질문 텍스트 최소 높이 */
+            display: flex;
+            align-items: center;
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .answer-btn {
+            padding: 20px;
+            font-size: 16px;
+            font-weight: 600;
+            border: 2px solid #ff6b4a;
+            background: linear-gradient(135deg, #ff6b4a 0%, #ff8c42 100%);
+            color: white;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .answer-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 107, 74, 0.3);
+        }
+
+        .answer-btn.no {
+            background: white;
+            color: #64748b;
+            border: 2px solid #e2e8f0;
+        }
+
+        .answer-btn.no:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Result View */
+        .result-container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        .result-content {
+            background: white;
+            border-radius: 24px;
+            padding: 40px 32px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+        }
+
+        .complete-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 24px;
+            background: linear-gradient(135deg, #ff6b4a 0%, #ff8c42 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .result-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a2332;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .result-subtitle {
+            font-size: 14px;
+            color: #64748b;
+            text-align: center;
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+
+        /* Alert Box */
+        .alert-box {
+            background: linear-gradient(135deg, #fff5f2 0%, #fffaf8 100%);
+            border: 2px solid #fecaca;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .alert-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .alert-tag {
+            background: white;
+            color: #dc2626;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            border: 1px solid #fecaca;
+        }
+
+        .alert-desc {
+            font-size: 14px;
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        .emergency-warning {
+            background: linear-gradient(135deg, #fee2e2 0%, #fef2f2 100%);
+            border: 2px solid #dc2626;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .emergency-warning h4 {
+            color: #dc2626;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .emergency-warning p {
+            color: #991b1b;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Benefit Box */
+        .benefit-box {
+            background: linear-gradient(135deg, #f0f9ff 0%, #f8fafc 100%);
+            border: 2px solid #dbeafe;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .benefit-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+            font-weight: 700;
+            color: #1e40af;
+            margin-bottom: 12px;
+        }
+
+        .benefit-icon {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .benefit-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .benefit-list li {
+            font-size: 13px;
+            color: #475569;
+            padding-left: 16px;
+            margin-bottom: 6px;
+            position: relative;
+            line-height: 1.5;
+        }
+
+        .benefit-list li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #3b82f6;
+            font-weight: 700;
+        }
+
+        /* Contact Form */
+        .contact-form {
+            margin-top: 24px;
+        }
+
+        .contact-form-notice {
+            font-size: 11px;
+            color: #94a3b8;
+            text-align: center;
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .contact-form-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #334155;
+            text-align: center;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .contact-input {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 15px;
+            margin-bottom: 12px;
+            transition: all 0.2s;
+        }
+
+        .contact-input:focus {
+            outline: none;
+            border-color: #ff6b4a;
+            box-shadow: 0 0 0 3px rgba(255, 107, 74, 0.1);
+        }
+
+        /* Consent Checkboxes */
+        .consent-section {
+            margin-bottom: 20px;
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .consent-all {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            background: white;
+            border: 2px solid #ff6b4a;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .consent-all:hover {
+            box-shadow: 0 4px 12px rgba(255, 107, 74, 0.2);
+        }
+
+        .consent-all input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            cursor: pointer;
+        }
+
+        .consent-all label {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1a2332;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .consent-detail {
+            padding-left: 12px;
+            border-left: 2px solid #e2e8f0;
+        }
+
+        .consent-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 8px;
+            cursor: pointer;
+        }
+
+        .consent-item input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        .consent-item label {
+            font-size: 12px;
+            color: #475569;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .consent-badge {
+            font-size: 10px;
+            color: #94a3b8;
+            margin-left: 4px;
+        }
+
+        .consent-link {
+            color: #ff6b4a;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 18px;
+            font-size: 16px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ff6b4a 0%, #ff8c42 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 107, 74, 0.4);
+        }
+
+        .submit-button:disabled {
+            background: #cbd5e1;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Referral Section */
+        .referral-section {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .referral-title {
+            font-size: 13px;
+            color: #64748b;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .referral-btn {
+            width: 100%;
+            padding: 14px;
+            font-size: 14px;
+            font-weight: 600;
+            background: white;
+            color: #ff6b4a;
+            border: 2px solid #ff6b4a;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .referral-btn:hover {
+            background: #fff5f2;
+        }
+
+        /* Footer Notice */
+        .footer-notice {
+            font-size: 10px;
+            color: #94a3b8;
+            text-align: center;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .footer-notice a {
+            color: #64748b;
+            text-decoration: underline;
+        }
+
+        /* Floating Button */
+        .floating-button {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            max-width: 360px;
+            width: calc(100% - 48px);
+            padding: 18px 24px;
+            background: linear-gradient(135deg, #ff6b4a 0%, #ff8c42 100%);
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(255, 107, 74, 0.4);
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s;
+            display: none;
+        }
+
+        .floating-button.show {
+            display: block;
+            animation: floatIn 0.3s ease-out;
+        }
+
+        @keyframes floatIn {
+            0% {
+                opacity: 0;
+                transform: translateX(-50%) translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        .floating-button:hover {
+            transform: translateX(-50%) translateY(-2px);
+            box-shadow: 0 12px 32px rgba(255, 107, 74, 0.5);
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <!-- Header -->
+        <div class="header" id="mainHeader">
+            <div class="header-content">
+                <p class="header-label">건강 자가 점검</p>
+                <p class="header-step" id="stepText">1 / 15</p>
+            </div>
+        </div>
+
+        <!-- Question View -->
+        <div id="questionView" class="container">
+            <div class="question-card">
+                <div class="category-badge">
+                    <span class="category-text" id="categoryText">뇌신경계</span>
+                </div>
+                <h2 class="question-text" id="questionText">갑자기 일어날 때 어지러워 잠시 멈춰 선 적이 있습니까?</h2>
+            </div>
+
+            <div class="button-grid">
+                <button class="answer-btn" id="btnYes">예</button>
+                <button class="answer-btn no" id="btnNo">아니오</button>
+            </div>
+        </div>
+
+        <!-- Result View -->
+        <div id="resultView" class="result-container hidden">
+            <div class="result-content">
+                <div class="complete-icon">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                </div>
+
+                <div class="result-card">
+                    <h1 class="result-title">점검 완료</h1>
+                    <p class="result-subtitle">
+                        귀하의 건강 자가 점검이 완료되었습니다<br>
+                        <span style="font-size: 12px; color: #94a3b8;">(본 결과는 의학적 진단이 아닙니다)</span>
+                    </p>
+
+                    <!-- 응급 경고 (q4 또는 q5 체크 시) -->
+                    <div id="emergencyBox" class="emergency-warning hidden">
+                        <h4>⚠️ 긴급 권고</h4>
+                        <p>마비 또는 발음 이상 증상이 확인되었습니다. 현재 증상이 지속된다면 가까운 신경과 또는 응급실 방문을 권장합니다.</p>
+                    </div>
+
+                    <div id="alertBox" class="alert-box hidden">
+                        <div id="alertTags" class="alert-tags"></div>
+                        <p class="alert-desc">
+                            해당 항목이 확인되었습니다.<br>
+                            전문 병원 방문을 권장드립니다.
+                        </p>
+                    </div>
+
+                    <div id="normalBox" class="alert-box hidden" style="background: linear-gradient(135deg, #f0fdf4 0%, #f7fee7 100%); border: 2px solid #d1fae5;">
+                        <div style="text-align: center; margin-bottom: 12px;">
+                            <span style="font-size: 32px;">📋</span>
+                        </div>
+                        <h3 style="font-size: 16px; font-weight: 700; color: #166534; text-align: center; margin-bottom: 8px;">
+                            점검 결과 안내
+                        </h3>
+                        <p style="font-size: 13px; color: #15803d; text-align: center; line-height: 1.7;">
+                            간이 점검상 다수의 위험 징후는 확인되지 않았습니다.<br><br>
+                            다만, 본 결과는 의학적 진단이 아니므로<br>
+                            증상이 있다면 의료기관 상담을 권장합니다.
+                        </p>
+                    </div>
+
+                    <!-- 혜택 안내 -->
+                    <div class="benefit-box">
+                        <div class="benefit-title">
+                            <div class="benefit-icon">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                </svg>
+                            </div>
+                            무료 제공 안내
+                        </div>
+                        <ul class="benefit-list">
+                            <li>내 지역 협약 검진기관 정보</li>
+                            <li>병원별 검진 프로그램 비교</li>
+                            <li>건강보장 GAP 분석 및 전문 컨설팅 리포트</li>
+                        </ul>
+                    </div>
+
+                    <!-- 연락처 입력 폼 -->
+                    <div class="contact-form">
+                        <p class="contact-form-title">지역 병원 안내를 받고 싶으시면<br>아래에 입력해주세요</p>
+                        
+                        <input type="text" 
+                               class="contact-input" 
+                               id="userName" 
+                               placeholder="이름"
+                               required>
+                        
+                        <input type="tel" 
+                               class="contact-input" 
+                               id="userPhone" 
+                               placeholder="010-0000-0000"
+                               required>
+                        
+                        <select class="contact-input" 
+                                id="userRegion" 
+                                required>
+                            <option value="">거주 지역 선택</option>
+                            <option value="서울">서울특별시</option>
+                            <option value="부산">부산광역시</option>
+                            <option value="대구">대구광역시</option>
+                            <option value="인천">인천광역시</option>
+                            <option value="광주">광주광역시</option>
+                            <option value="대전">대전광역시</option>
+                            <option value="울산">울산광역시</option>
+                            <option value="세종">세종특별자치시</option>
+                            <option value="경기">경기도</option>
+                            <option value="강원">강원특별자치도</option>
+                            <option value="충북">충청북도</option>
+                            <option value="충남">충청남도</option>
+                            <option value="전북">전북특별자치도</option>
+                            <option value="전남">전라남도</option>
+                            <option value="경북">경상북도</option>
+                            <option value="경남">경상남도</option>
+                            <option value="제주">제주특별자치도</option>
+                        </select>
+                        
+                        <!-- 동의 섹션 -->
+                        <div class="consent-section">
+                            <div class="consent-all" onclick="toggleAllConsent()">
+                                <input type="checkbox" id="consentAll">
+                                <label for="consentAll">이용약관 및 서비스 안내 전체동의</label>
+                            </div>
+                            
+                            <div class="consent-detail">
+                                <div class="consent-item">
+                                    <input type="checkbox" id="consent1" class="consent-checkbox" required>
+                                    <label for="consent1">
+                                        개인정보 수집 및 이용 동의
+                                        <span class="consent-badge">(필수)</span>
+                                    </label>
+                                </div>
+                                
+                                <div class="consent-item">
+                                    <input type="checkbox" id="consent2" class="consent-checkbox" required>
+                                    <label for="consent2">
+                                        민감정보(건강응답) 처리 동의
+                                        <span class="consent-badge">(필수)</span>
+                                    </label>
+                                </div>
+                                
+                                <div class="consent-item">
+                                    <input type="checkbox" id="consent3" class="consent-checkbox">
+                                    <label for="consent3">
+                                        건강보장 GAP 분석 및 전문 컨설팅 리포트 수신
+                                        <span class="consent-badge">(선택)</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div style="text-align: center; margin-top: 12px;">
+                                <a href="#" onclick="showDetailNotice(); return false;" class="consent-link" style="font-size: 11px;">
+                                    자세히 보기
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <button class="submit-button" id="submitBtn" onclick="submitContact()">
+                            지역 병원 안내 받기
+                        </button>
+                        
+                        <p class="contact-form-notice" style="margin-top: 16px;">
+                            본 서비스는 시니어헬스 컨설팅 파트너에서 운영하며,<br>
+                            신청 시 건강관리 및 보장 점검 상담 안내가 진행됩니다.
+                        </p>
+                    </div>
+
+                    <!-- 소개 -->
+                    <div class="referral-section">
+                        <p class="referral-title">
+                            💡 건강이 걱정되는 가족·지인분께 공유하세요
+                        </p>
+                        <button class="referral-btn" onclick="shareLink()">
+                            채널 공유하기
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Button (결과 화면에서만 표시) -->
+        <button class="floating-button" id="floatingBtn" onclick="scrollToForm()">
+            지역 협약 병원 정보 받기 👇
+        </button>
+
+        <!-- Thanks View (신청 완료 화면) -->
+        <div id="thanksView" class="result-container hidden">
+            <div class="result-content">
+                <div class="complete-icon" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                </div>
+
+                <div class="result-card">
+                    <h1 class="result-title" style="color: #059669;">신청 완료!</h1>
+                    <p class="result-subtitle" style="font-size: 16px; color: #1a2332; line-height: 1.8;">
+                        감사합니다.<br><br>
+                        <strong style="color: #ff6b4a;">1~2일 안에</strong> 지역 병원 정보를<br>
+                        문자로 안내드리겠습니다.
+                    </p>
+
+                    <!-- 소개 -->
+                    <div class="referral-section" style="margin-top: 40px;">
+                        <p class="referral-title">
+                            💡 건강이 걱정되는 가족·지인분께 공유하세요
+                        </p>
+                        <button class="referral-btn" onclick="shareLink()">
+                            채널 공유하기
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Notice -->
+        <div class="footer-notice">
+            운영주체: 시니어헬스 컨설팅 파트너<br>
+            본 자가점검은 통계 기반 참고용이며 의학적 진단이 아닙니다.<br>
+            신청 시 개인정보 및 민감정보가 제출되며, 상담 과정에서 보험상품 설명이 포함될 수 있습니다.
+            <a href="#" onclick="showDetailNotice(); return false;">자세히 보기</a>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            // 뇌신경계 (5개)
+            { id: 'q1', category: 'brain', text: '갑자기 일어날 때 어지러워 잠시 멈춰 선 적이 있습니까?' },
+            { id: 'q2', category: 'brain', text: '최근 한 달간 두통이 주 2회 이상 발생합니까?' },
+            { id: 'q3', category: 'brain', text: '뒷목이 심하게 뻣뻣해서 고개 돌리기 힘들 때가 있습니까?' },
+            { id: 'q4', category: 'brain', text: '한쪽 팔다리의 힘이 갑자기 빠져 물건을 떨어뜨린 적이 있습니까?', emergency: true },
+            { id: 'q5', category: 'brain', text: '최근 주변 사람들이 발음이 어눌해졌다는 말을 한 적이 있습니까?', emergency: true },
+            
+            // 심혈관계 (5개)
+            { id: 'q6', category: 'cardio', text: '가만히 앉아있는데도 가슴이 두근거리거나 답답할 때가 있습니까?' },
+            { id: 'q7', category: 'cardio', text: '예전보다 계단 오르기가 힘들어졌습니까?' },
+            { id: 'q8', category: 'cardio', text: '손발이 저리거나 차가운 느낌이 자주 듭니까?' },
+            { id: 'q9', category: 'cardio', text: '건강검진에서 혈압이 높다는 지적을 받은 적이 있습니까?' },
+            { id: 'q10', category: 'cardio', text: '부모님이나 형제자매 중 심장병이나 뇌졸중을 앓은 분이 있습니까?' },
+            
+            // 인지기능계 (5개)
+            { id: 'q11', category: 'cognitive', text: '최근 1년 새 기억력이 눈에 띄게 나빠졌다고 느낍니까?' },
+            { id: 'q12', category: 'cognitive', text: '자주 가던 곳에서 길을 잃거나 헤맨 적이 있습니까?' },
+            { id: 'q13', category: 'cognitive', text: '계산대에서 거스름돈 계산이 어려워 당황한 적이 있습니까?' },
+            { id: 'q14', category: 'cognitive', text: '대화 중 말하려던 단어가 갑자기 생각나지 않을 때가 많습니까?' },
+            { id: 'q15', category: 'cognitive', text: '가족이 같은 이야기를 반복한다고 지적한 적이 있습니까?' }
+        ];
+
+        const categoryLabels = {
+            brain: '뇌신경계',
+            cardio: '심혈관계',
+            cognitive: '인지기능'
+        };
+
+        let currentStep = 0;
+        let answers = {};
+        let scores = {};
+        let source = '';
+        let agentCode = '';
+
+        // URL 파라미터 추출
+        const urlParams = new URLSearchParams(window.location.search);
+        source = urlParams.get('source') || 'direct';
+        agentCode = urlParams.get('agent') || '테스트';
+
+        function updateUI() {
+            const question = questions[currentStep];
+            const progress = ((currentStep + 1) / questions.length) * 100;
+
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('stepText').textContent = `${currentStep + 1} / ${questions.length}`;
+            document.getElementById('categoryText').textContent = categoryLabels[question.category];
+            document.getElementById('questionText').textContent = question.text;
+        }
+
+        function handleAnswer(answer) {
+            const question = questions[currentStep];
+            answers[question.id] = answer;
+
+            if (currentStep === questions.length - 1) {
+                setTimeout(() => {
+                    showResult();
+                }, 300);
+            } else {
+                currentStep++;
+                setTimeout(() => {
+                    updateUI();
+                }, 300);
+            }
+        }
+
+        function showResult() {
+            // 카테고리별 점수 계산
+            scores = {
+                brain: 0,
+                cardio: 0,
+                cognitive: 0
+            };
+
+            let hasEmergency = false;
+
+            questions.forEach(q => {
+                if (answers[q.id] === true) {
+                    scores[q.category]++;
+                    // 응급 질문 체크
+                    if (q.emergency) {
+                        hasEmergency = true;
+                    }
+                }
+            });
+
+            // 응급 경고 표시
+            if (hasEmergency) {
+                document.getElementById('emergencyBox').classList.remove('hidden');
+            }
+
+            const alertCategories = Object.entries(scores)
+                .filter(([_, score]) => score >= 2)
+                .map(([category, score]) => ({
+                    name: categoryLabels[category],
+                    score: score
+                }));
+
+            if (alertCategories.length > 0) {
+                const alertBox = document.getElementById('alertBox');
+                const alertTags = document.getElementById('alertTags');
+                
+                alertBox.classList.remove('hidden');
+                alertTags.innerHTML = alertCategories
+                    .map(cat => `<span class="alert-tag">${cat.name} 해당 항목 ${cat.score}/5개</span>`)
+                    .join('');
+            } else {
+                const normalBox = document.getElementById('normalBox');
+                normalBox.classList.remove('hidden');
+            }
+
+            // 화면 전환
+            document.getElementById('questionView').classList.add('hidden');
+            document.getElementById('mainHeader').classList.add('hidden');
+            document.getElementById('resultView').classList.remove('hidden');
+            
+            // 떠있는 버튼 표시
+            setTimeout(() => {
+                document.getElementById('floatingBtn').classList.add('show');
+            }, 500);
+        }
+
+        // 전체동의 토글
+        function toggleAllConsent() {
+            const allCheck = document.getElementById('consentAll');
+            const checkboxes = document.querySelectorAll('.consent-checkbox');
+            
+            checkboxes.forEach(cb => {
+                cb.checked = allCheck.checked;
+            });
+        }
+
+        // 개별 체크박스 변경 시 전체동의 상태 업데이트
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkboxes = document.querySelectorAll('.consent-checkbox');
+            checkboxes.forEach(cb => {
+                cb.addEventListener('change', function() {
+                    const allChecked = Array.from(checkboxes).every(c => c.checked);
+                    document.getElementById('consentAll').checked = allChecked;
+                });
+            });
+        });
+
+        function submitContact() {
+            console.log('submitContact 함수 실행됨');
+            
+            try {
+                const name = document.getElementById('userName').value.trim();
+                const phone = document.getElementById('userPhone').value.trim();
+                const region = document.getElementById('userRegion').value.trim();
+                const consent1 = document.getElementById('consent1').checked;
+                const consent2 = document.getElementById('consent2').checked;
+                const consent3 = document.getElementById('consent3').checked;
+                
+                console.log('입력값:', { name, phone, region, consent1, consent2, consent3 });
+                
+                // 유효성 검사
+                if (!name) {
+                    alert('이름을 입력해주세요.');
+                    document.getElementById('userName').focus();
+                    return;
+                }
+                
+                if (!phone) {
+                    alert('전화번호를 입력해주세요.');
+                    document.getElementById('userPhone').focus();
+                    return;
+                }
+                
+                // 전화번호 형식 검증
+                const phonePattern = /^01[0-9]-?[0-9]{3,4}-?[0-9]{4}$/;
+                if (!phonePattern.test(phone)) {
+                    alert('올바른 전화번호 형식을 입력해주세요.\n예: 010-1234-5678');
+                    document.getElementById('userPhone').focus();
+                    return;
+                }
+                
+                if (!region) {
+                    alert('거주 지역을 선택해주세요.');
+                    document.getElementById('userRegion').focus();
+                    return;
+                }
+                
+                if (!consent1 || !consent2) {
+                    alert('필수 동의 항목에 체크해주세요.');
+                    return;
+                }
+                
+                // 데이터 준비
+                const contactData = {
+                    name: name,
+                    phone: phone,
+                    region: region,
+                    source: source,
+                    agent: agentCode,
+                    timestamp: new Date().toISOString(),
+                    answers: answers,
+                    scores: scores,
+                    consent1: consent1,
+                    consent2: consent2,
+                    consent3: consent3
+                };
+                
+                console.log('제출 데이터:', contactData);
+                
+                // Google Apps Script Web App URL
+                const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw5K4cVVYX5BEO4cZYiATm0ojueyRIDw00E-NGU4M-aPe0nppChjMxV2ShVVNtjZbkSkg/exec';
+                
+                // 스프레드시트로 데이터 전송
+                fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(contactData)
+                })
+                .then(() => {
+                    console.log('✅ 스프레드시트 전송 완료');
+                })
+                .catch(error => {
+                    console.error('❌ 전송 실패:', error);
+                });
+                
+                // 화면 전환 (alert 대신 thanksView로 전환)
+                document.getElementById('resultView').classList.add('hidden');
+                document.getElementById('thanksView').classList.remove('hidden');
+                
+                // 떠있는 버튼 숨기기
+                document.getElementById('floatingBtn').classList.remove('show');
+                
+            } catch (error) {
+                console.error('오류 발생:', error);
+                alert('오류가 발생했습니다. 다시 시도해주세요.\n\n' + error.message);
+            }
+        }
+
+        function scrollToForm() {
+            const formTitle = document.querySelector('.contact-form-title');
+            if (formTitle) {
+                formTitle.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        function shareLink() {
+            const channelUrl = 'https://pf.kakao.com/_xkBNWn';
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: '시니어헬스 건강 자가 점검',
+                    text: '무료 건강 점검 + 보장 점검 리포트\n시니어헬스 채널에서 확인하세요!',
+                    url: channelUrl
+                }).catch(() => {
+                    copyToClipboard(channelUrl);
+                });
+            } else {
+                copyToClipboard(channelUrl);
+            }
+        }
+        
+        function copyToClipboard(text) {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text).then(() => {
+                    alert('카카오 채널 링크가 복사되었습니다!\n\n지인에게 공유해주세요:\n' + text);
+                });
+            } else {
+                alert('카카오 채널 링크:\n' + text + '\n\n위 링크를 복사해서 지인에게 공유해주세요!');
+            }
+        }
+
+        function showDetailNotice() {
+            alert('[개인정보 수집 및 이용 안내]\n\n' +
+                  '1. 수집 항목: 점검 응답 결과, 연락처 (건강정보 포함)\n' +
+                  '2. 수집 목적: 건강 보장 분석 및 맞춤 상담 제공\n' +
+                  '3. 보유 기간: 목적 달성 시 또는 파기 요청 시까지\n' +
+                  '4. 운영 주체: 시니어헬스 컨설팅 파트너\n' +
+                  '5. 서비스 안내: 신청 시 건강관리 및 보장 점검 상담 안내가 진행되며, 보험 상품 설명이 포함될 수 있습니다.\n\n' +
+                  '[주의사항]\n' +
+                  '본 자가 점검은 통계 기반 참고용이며, 의학적 진단이 아닙니다. 정확한 진단은 의료기관에서 받으셔야 합니다.');
+        }
+
+        // 이벤트 리스너
+        document.addEventListener('DOMContentLoaded', function() {
+            updateUI();
+            
+            document.getElementById('btnYes').addEventListener('click', function() {
+                handleAnswer(true);
+            });
+            
+            document.getElementById('btnNo').addEventListener('click', function() {
+                handleAnswer(false);
+            });
+            
+            // 터치 이벤트
+            document.getElementById('btnYes').addEventListener('touchend', function(e) {
+                e.preventDefault();
+                handleAnswer(true);
+            });
+            
+            document.getElementById('btnNo').addEventListener('touchend', function(e) {
+                e.preventDefault();
+                handleAnswer(false);
+            });
+        });
+    </script>
+</body>
+</html>
